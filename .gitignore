@@ -1,0 +1,22 @@
+# Rust
+/target/
+/Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Debug
+*.log
