@@ -1,10 +1,10 @@
 [package]
-name = "raindrop-mcp-server-rs"
+name = "raindrop-mcp-server"
 version         = "0.1.0"
 edition         = "2024"
 rust-version    = "1.85"
 authors         = ["Yamahigashi <yamahigashi@gmail.com>"]
-description = "A Rust implementation of the Raindrop MCP server, providing a protocol for managing and interacting with Raindrop bookmarks."
+description     = "A Rust implementation of the Raindrop MCP server, providing a protocol for managing and interacting with Raindrop bookmarks."
 license         = "MIT"
 repository      = "https://github.com/yamahigashi/raindrop-mcp-server-rs"
 homepage        = "https://github.com/yamahigashi/raindrop-mcp-server-rs"
