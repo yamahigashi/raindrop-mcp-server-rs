@@ -22,7 +22,7 @@ A Model Context Protocol (MCP) server implementation for [Raindrop.io](https://r
 
 ## Quick Start
 
-1. **Download** the latest binary from [GitHub Releases](https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/tag/v0.1.0)
+1. **Download** the latest binary from [GitHub Releases](https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/latest)
 2. **Get API Token** from [Raindrop.io Settings → Integrations](https://raindrop.io/settings/integrations)
 3. **Configure Claude Desktop** (`claude_desktop_config.json`):
    ```json
