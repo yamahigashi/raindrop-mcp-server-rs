@@ -43,11 +43,11 @@ A Model Context Protocol (MCP) server implementation for [Raindrop.io](https://r
 
 ### Pre-built Binaries (Recommended)
 
-Download from [GitHub Releases](https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/tag/v0.1.0):
+Download from [GitHub Releases](https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/latest):
 
 **Linux:**
 ```bash
-wget https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/download/v0.1.0/raindrop-mcp-server-v0.1.0-linux.tar.gz
+wget https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/download/latest/raindrop-mcp-server-linux.tar.gz
 tar -xzf raindrop-mcp-server-v0.1.0-linux.tar.gz
 chmod +x raindrop-mcp-server-linux
 sudo mv raindrop-mcp-server-linux /usr/local/bin/raindrop-mcp-server
