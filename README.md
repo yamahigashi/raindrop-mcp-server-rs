@@ -1,82 +1,103 @@
-# raindrop-mcp-server-rs
+# raindrop-mcp-server
 A Model Context Protocol (MCP) server implementation for [Raindrop.io](https://raindrop.io), exposing its API as a set of tools for AI agents and automated workflows.
 
-
 ![Rust 2024](https://img.shields.io/badge/Rust-2024-orange)
-[![CI](https://github.com/yamahigashi/raindrop-mcp-server-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/mcp-raindrop/actions/workflows/ci.yml)
+[![CI](https://github.com/yamahigashi/raindrop-mcp-server-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/yamahigashi/raindrop-mcp-server-rs/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 ---
 
 ## Table of Contents
-1. [Features](#features)
-2. [Quick Start](#quick-start)
-3. [Installation](#installation)
-   - [From Source](#from-source)
-   - [Configuration](#configuration)
+1. [Quick Start](#quick-start)
+2. [Installation](#installation)
+3. [Configuration](#configuration)
 4. [Usage](#usage)
-
+5. [Requirements](#requirements)
+6. [Troubleshooting](#troubleshooting)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 ---
 
-## Features
-
-| Category  | Highlights |
-|-----------|------------|
-| **MCP tools** | 40 🛠️ tools auto‑generated via `rmcp‑macros`<br>covering collections, bookmarks, tags, highlights & user endpoints |
-| **MCP resources** | Pre‑mounted URIs (`raindrop://collections/all`, `raindrop://tags/all`, …) |
-| **MCP prompts** | Ready‑to‑use prompt templates (weekly digest, duplicate finder, etc.) |
-
 ## Quick Start
-TODO: write later
+
+1. **Download** the latest binary from [GitHub Releases](https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/tag/v0.1.0)
+2. **Get API Token** from [Raindrop.io Settings → Integrations](https://raindrop.io/settings/integrations)
+3. **Configure Claude Desktop** (`claude_desktop_config.json`):
+   ```json
+   {
+     "mcpServers": {
+       "raindrop": {
+         "command": "/usr/local/bin/raindrop-mcp-server",
+         "env": {
+           "RAINDROP_ACCESS_TOKEN": "your_token_here"
+         }
+       }
+     }
+   }
+   ```
+4. **Start using**: Ask Claude to "Show me all my Raindrop collections"
 
 ## Installation
+
+### Pre-built Binaries (Recommended)
+
+Download from [GitHub Releases](https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/tag/v0.1.0):
+
+**Linux:**
+```bash
+wget https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/download/v0.1.0/raindrop-mcp-server-v0.1.0-linux.tar.gz
+tar -xzf raindrop-mcp-server-v0.1.0-linux.tar.gz
+chmod +x raindrop-mcp-server-linux
+sudo mv raindrop-mcp-server-linux /usr/local/bin/raindrop-mcp-server
+```
+
+**Windows:**
+```powershell
+Invoke-WebRequest -Uri "https://github.com/yamahigashi/raindrop-mcp-server-rs/releases/download/v0.1.0/raindrop-mcp-server-v0.1.0-windows.zip" -OutFile "raindrop-mcp-server.zip"
+Expand-Archive -Path "raindrop-mcp-server.zip" -DestinationPath "."
+# Move raindrop-mcp-server-windows.exe to a directory in your PATH
+```
 
 ### From Source
 
 ```bash
-# Clone the repository
 git clone https://github.com/yamahigashi/raindrop-mcp-server-rs.git
 cd raindrop-mcp-server-rs
-
-# Build the project
 cargo build --release
-
-# The binary will be available at ./target/release/raindrop-mcp-server-rs
+# Binary: ./target/release/raindrop-mcp-server
 ```
 
-### Configuration
-1. Obtain Raindrop.io API Token
+## Configuration
 
-Log in to your Raindrop.io account
-Go to Settings → Integrations
-Create a new app or select an existing one
-Generate an access token
+### 1. Raindrop.io API Token
 
-2. Set Environment Variables
-Create a .env file in the project root:
-```dotenv
-# Required
-RAINDROP_ACCESS_TOKEN=your_raindrop_access_token_here
+1. Log in to [Raindrop.io](https://raindrop.io)
+2. Go to **Settings** → **Integrations**
+3. Create a new app or select an existing one
+4. Generate an access token
 
-# Optional
-RUST_LOG=info
-```
+### 2. MCP Client Setup
 
-3. Configure MCP Client
-Add the server to your MCP client configuration. For Claude Desktop, edit your claude_desktop_config.json:
+**For Claude Desktop**, edit `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
     "raindrop": {
-      "command": "/path/to/mcp-raindrop",
+      "command": "/usr/local/bin/raindrop-mcp-server",
       "env": {
         "RAINDROP_ACCESS_TOKEN": "your_raindrop_access_token_here"
       }
     }
   }
 }
+```
+
+**For development**, create `.env` file:
+```dotenv
+RAINDROP_ACCESS_TOKEN=your_raindrop_access_token_here
+RUST_LOG=info
 ```
 
 ## Usage
@@ -134,3 +155,47 @@ Here are some example prompts you can use with an AI assistant:
 - "Move all bookmarks from 'Unsorted' to 'Archive' collection"
 - "Export my 'Work' collection as a CSV file"
 - "Show me all highlights from the past week"
+
+## Requirements
+
+### For End Users (Pre-built Binaries)
+- **Operating System**: Linux (x86_64) or Windows (x86_64)
+- **Raindrop.io Account**: Valid API access token required
+
+### For Developers (Building from Source)
+- **Rust**: 1.85 or later
+- **Operating System**: Linux (x86_64) or Windows (x86_64)
+- **Raindrop.io Account**: Valid API access token required
+
+## Troubleshooting
+
+### Common Issues
+
+**"Permission denied" when running the binary**
+```bash
+chmod +x raindrop-mcp-server-linux
+```
+
+**"RAINDROP_ACCESS_TOKEN not found"**
+- Ensure the token is set in your MCP client configuration
+- Verify the token is valid at [Raindrop.io Settings](https://raindrop.io/settings/integrations)
+
+**"Connection refused" or timeout errors**
+- Check your internet connection
+- Verify Raindrop.io API is accessible from your network
+
+**Claude Desktop not recognizing the server**
+- Restart Claude Desktop after configuration changes
+- Check `claude_desktop_config.json` syntax with a JSON validator
+- Verify the binary path is correct and executable
+
+### Debug Mode
+
+Enable detailed logging:
+```bash
+RUST_LOG=debug /usr/local/bin/raindrop-mcp-server
+```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
