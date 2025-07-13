@@ -1,5 +1,5 @@
 use anyhow::Result;
-use raindrop_mcp_server_rs::mcp::McpServer;
+use raindrop_mcp_server::mcp::McpServer;
 use rmcp::{ServiceExt, transport::stdio};
 use tracing::{error, info};
 use tracing_subscriber::EnvFilter;

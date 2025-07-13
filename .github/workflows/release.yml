@@ -1,0 +1,84 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-gnu,x86_64-pc-windows-gnu
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Install cross-compilation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-mingw-w64-x86-64
+
+      - name: Release build for all targets
+        run: just release-all
+
+      - name: Package binaries
+        run: |
+          mkdir -p release
+          # Linux binary
+          cp target/x86_64-unknown-linux-gnu/release/raindrop-mcp-server release/raindrop-mcp-server-linux
+          tar czf release/raindrop-mcp-server-${{ github.ref_name }}-linux.tar.gz -C release raindrop-mcp-server-linux
+          # Windows binary
+          cp target/x86_64-pc-windows-gnu/release/raindrop-mcp-server.exe release/raindrop-mcp-server-windows.exe
+          zip -j release/raindrop-mcp-server-${{ github.ref_name }}-windows.zip release/raindrop-mcp-server-windows.exe
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raindrop-mcp-server-linux-${{ github.ref_name }}
+          path: release/raindrop-mcp-server-${{ github.ref_name }}-linux.tar.gz
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raindrop-mcp-server-windows-${{ github.ref_name }}
+          path: release/raindrop-mcp-server-${{ github.ref_name }}-windows.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: raindrop-mcp-server-linux-${{ github.ref_name }}
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: raindrop-mcp-server-windows-${{ github.ref_name }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            raindrop-mcp-server-${{ github.ref_name }}-linux.tar.gz
+            raindrop-mcp-server-${{ github.ref_name }}-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
