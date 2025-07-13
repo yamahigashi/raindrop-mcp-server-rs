@@ -37,13 +37,13 @@ TODO: write later
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mcp-raindrop.git
-cd mcp-raindrop
+git clone https://github.com/yamahigashi/raindrop-mcp-server-rs.git
+cd raindrop-mcp-server-rs
 
 # Build the project
 cargo build --release
 
-# The binary will be available at ./target/release/mcp-raindrop
+# The binary will be available at ./target/release/raindrop-mcp-server-rs
 ```
 
 ### Configuration
